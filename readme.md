@@ -5,13 +5,13 @@
 <h3>On unix like</h3>
 
 ```
-go build main.go && ./main 
+go build main.go && ./main filepath
 ```
 
 <h3>On windows</h3>
 
 ```
-go build main.go && ./main.exe 
+go build main.go && ./main.exe filepath
 ```
 
 <h2>Run tests</h2>
