@@ -45,8 +45,8 @@ func TestFailIsSorted(t *testing.T) {
 }
 
 func TestSortSlice(t *testing.T) {
-	slice := sortSlice(notSortedSlice)
-	if !equal(slice, sortedSlice) {
+	sortSlice(notSortedSlice)
+	if !equal(notSortedSlice, sortedSlice) {
 		t.Errorf("Test sortSlice failed")
 	}
 }
