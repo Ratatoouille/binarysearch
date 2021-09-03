@@ -13,11 +13,10 @@ func main() {
 		run(os.Args[1])
 		return
 	}
-	err := fmt.Errorf("add file as arg")
-	log.Fatalln(err)
+	log.Fatalln("add file as arg")
 }
 
-//run program
+// run start program
 func run(filepath string) {
 	data, err := readFile(filepath)
 	if err != nil {
@@ -29,42 +28,36 @@ func run(filepath string) {
 	sc.Scan()
 	target := sc.Text()
 
-	if sorted := isSorted(data); sorted {
-		fmt.Printf("data: %v\n", data)
-
-		index := binarySearchString(data, target)
-		fmt.Printf("target is: %s, index is: %d", data[index], index)
-		return
+	if !isSorted(data) {
+		sortSlice(data)
 	}
-	data = sortSlice(data)
 
 	fmt.Printf("data: %v\n", data)
 	index := binarySearchString(data, target)
 
 	if index == -1 {
-		fmt.Printf("target: %s not found in file\n", target)
+		fmt.Printf("target: %s not found in file", target)
 		return
 	}
-	fmt.Printf("target is: %s, index is: %d\n", data[index], index)
+	fmt.Printf("target is: %s, index is: %d", data[index], index)
+	return
 }
 
-//check slice is sorted
+// isSorted check slice of strings is sorted
 func isSorted(slice []string) bool {
 	return sort.SliceIsSorted(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
 	})
 }
 
-//sort slice
-func sortSlice(slice []string) []string {
+// sortSlice sort slice of strings
+func sortSlice(slice []string) {
 	sort.Slice(slice, func(i, j int) bool {
 		return slice[i] < slice[j]
 	})
-
-	return slice
 }
 
-//read file to string slice
+// readFile read file by path into slice of strings
 func readFile(path string) ([]string, error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -73,7 +66,7 @@ func readFile(path string) ([]string, error) {
 	defer func(file *os.File) {
 		err := file.Close()
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
 		}
 	}(file)
 
@@ -83,10 +76,10 @@ func readFile(path string) ([]string, error) {
 		slice = append(slice, sc.Text())
 	}
 
-	return slice, err
+	return slice, sc.Err()
 }
 
-//binary search in string slice
+// binarySearchString binary search in slice of strings
 func binarySearchString(slice []string, target string) int {
 	low := 0
 	high := len(slice) - 1
