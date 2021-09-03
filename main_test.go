@@ -51,7 +51,7 @@ func TestSortSlice(t *testing.T) {
 	}
 }
 
-func TestOkReadFile(t *testing.T)  {
+func TestOkReadFile(t *testing.T) {
 	slice, err := readFile("./test_data.txt")
 	if err != nil {
 		t.Errorf("Test readFile failed: %s", err)
@@ -63,7 +63,14 @@ func TestOkReadFile(t *testing.T)  {
 	}
 }
 
-func TestFindBinarySearchString(t *testing.T) {
+func TestFindHightBinarySearchString(t *testing.T) {
+	i := binarySearchString(sortedSlice, "alice")
+	if i != 0 {
+		t.Errorf("Test binarySearchString failed: target wasn't found")
+	}
+}
+
+func TestFindLowBinarySearchString(t *testing.T) {
 	i := binarySearchString(sortedSlice, "john")
 	if i != 2 {
 		t.Errorf("Test binarySearchString failed: target wasn't found")
@@ -75,6 +82,10 @@ func TestNotFindBinarySearchString(t *testing.T) {
 	if i != -1 {
 		t.Errorf("Test binarySearchString failed: target was found")
 	}
+}
+
+func TestRun(t *testing.T) {
+	run("./test_data.txt")
 }
 
 func equal(a, b []string) bool {

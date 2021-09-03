@@ -10,37 +10,42 @@ import (
 
 func main() {
 	if len(os.Args) == 2 {
-		data, err := readFile(os.Args[1])
-		if err != nil {
-			log.Fatalf("can't read file: %v", err)
-		}
-
-		fmt.Print("Enter the target: ")
-		sc := bufio.NewScanner(os.Stdin)
-		sc.Scan()
-		target := sc.Text()
-
-		if sorted := isSorted(data); sorted {
-			fmt.Printf("data: %v\n", data)
-
-			index := binarySearchString(data, target)
-			fmt.Printf("target is: %s, index is: %d", data[index], index)
-			return
-		}
-		data = sortSlice(data)
-
-		fmt.Printf("data: %v\n", data)
-		index := binarySearchString(data, target)
-
-		if index == -1 {
-			fmt.Printf("target: %s not found in file", target)
-			return
-		}
-		fmt.Printf("target is: %s, index is: %d", data[index], index)
+		run(os.Args[1])
 		return
 	}
 	err := fmt.Errorf("add file as arg")
-	fmt.Println(err)
+	log.Fatalln(err)
+}
+
+//run program
+func run(filepath string) {
+	data, err := readFile(filepath)
+	if err != nil {
+		log.Fatalf("can't read file: %v", err)
+	}
+
+	fmt.Print("Enter the target: ")
+	sc := bufio.NewScanner(os.Stdin)
+	sc.Scan()
+	target := sc.Text()
+
+	if sorted := isSorted(data); sorted {
+		fmt.Printf("data: %v\n", data)
+
+		index := binarySearchString(data, target)
+		fmt.Printf("target is: %s, index is: %d", data[index], index)
+		return
+	}
+	data = sortSlice(data)
+
+	fmt.Printf("data: %v\n", data)
+	index := binarySearchString(data, target)
+
+	if index == -1 {
+		fmt.Printf("target: %s not found in file\n", target)
+		return
+	}
+	fmt.Printf("target is: %s, index is: %d\n", data[index], index)
 }
 
 //check slice is sorted
@@ -63,7 +68,6 @@ func sortSlice(slice []string) []string {
 func readFile(path string) ([]string, error) {
 	file, err := os.Open(path)
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 	defer func(file *os.File) {
