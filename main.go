@@ -33,6 +33,7 @@ func run(filepath string) {
 	}
 
 	fmt.Printf("data: %v\n", data)
+	//index := binarySearchRecursively(data, target, data, len(data))
 	index := binarySearchString(data, target)
 
 	if index == -1 {
@@ -97,4 +98,20 @@ func binarySearchString(slice []string, target string) int {
 	}
 
 	return -1
+}
+
+func binarySearchRecursively(slice []string, target string, lowIndex int, highIndex int) int {
+	if highIndex < lowIndex {
+		return -1
+	}
+
+	mid := (lowIndex + highIndex) / 2
+
+	if slice[mid] > target {
+		return binarySearchRecursively(slice, target, lowIndex, mid)
+	} else if slice[mid] < target {
+		return binarySearchRecursively(slice, target, mid+1, highIndex)
+	} else {
+		return mid
+	}
 }
